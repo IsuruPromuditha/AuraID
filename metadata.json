@@ -1,0 +1,10 @@
+{
+  "name": "AURA ID — Progressive Music Discovery",
+  "description": "Real-time progressive music identification with acoustic fingerprinting, record label filtering across Beatport, Bandcamp, SoundCloud, and Mixcloud, and Spotify/Apple Music sync.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
