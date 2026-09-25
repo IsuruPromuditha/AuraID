@@ -99,8 +99,16 @@ export const MobileCompanionSheet: React.FC<MobileCompanionSheetProps> = ({
                   <div className="text-[11px] text-[#94A3B8] truncate max-w-[170px]">
                     {recentTrack.artist}
                   </div>
-                  <div className="text-[10px] text-[#00F0FF] font-mono">
-                    {recentTrack.musicalKey} · {recentTrack.recordLabel}
+                  <div className="text-[10px] text-[#00F0FF] font-mono flex items-center gap-1.5">
+                    <span>{recentTrack.musicalKey}</span>
+                    <span>·</span>
+                    <span>{recentTrack.recordLabel}</span>
+                    {recentTrack.beatportTrackId && (
+                      <>
+                        <span>·</span>
+                        <span className="text-[#00FF85]">#{recentTrack.beatportTrackId}</span>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

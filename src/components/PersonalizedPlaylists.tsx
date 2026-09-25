@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Sparkles,
   Music,
@@ -11,8 +11,14 @@ import {
   Layers,
   ArrowRight,
   Flame,
+  Play,
+  Square,
+  SkipForward,
+  Volume2,
+  Radio,
 } from 'lucide-react';
 import { Track } from '../types';
+import { audioEngine } from '../utils/audioFingerprinter';
 
 interface CuratedTrack {
   title: string;
@@ -51,6 +57,10 @@ export const PersonalizedPlaylists: React.FC<PersonalizedPlaylistsProps> = ({
   const [exportedSpotify, setExportedSpotify] = useState(false);
   const [exportedApple, setExportedApple] = useState(false);
 
+  // Audio Playback State for Generated Playlist
+  const [playingTrackIndex, setPlayingTrackIndex] = useState<number | null>(null);
+  const [isPlayingAll, setIsPlayingAll] = useState(false);
+
   const availableLabels = [
     'Afterlife',
     'Anjunadeep',
@@ -64,6 +74,13 @@ export const PersonalizedPlaylists: React.FC<PersonalizedPlaylistsProps> = ({
     'Monstercat Silk',
   ];
 
+  // Stop playback on unmount
+  useEffect(() => {
+    return () => {
+      audioEngine.stopAll();
+    };
+  }, []);
+
   const handleToggleLabel = (label: string) => {
     setSelectedLabels((prev) =>
       prev.includes(label) ? prev.filter((l) => l !== label) : [...prev, label]
@@ -74,6 +91,7 @@ export const PersonalizedPlaylists: React.FC<PersonalizedPlaylistsProps> = ({
     setIsLoading(true);
     setExportedSpotify(false);
     setExportedApple(false);
+    handleStopPlayback();
 
     try {
       const res = await fetch('/api/curate-progressive-journey', {
@@ -96,6 +114,70 @@ export const PersonalizedPlaylists: React.FC<PersonalizedPlaylistsProps> = ({
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Play individual track from generated list
+  const handlePlaySingleTrack = async (index: number) => {
+    if (!journey || !journey.tracks[index]) return;
+
+    if (playingTrackIndex === index) {
+      // Toggle pause/stop
+      handleStopPlayback();
+      return;
+    }
+
+    setPlayingTrackIndex(index);
+    setIsPlayingAll(false);
+    const trk = journey.tracks[index];
+    await audioEngine.playHarmonicTrack({
+      title: trk.title,
+      bpm: trk.bpm,
+      musicalKey: trk.musicalKey,
+      subGenre: trk.subGenre,
+      recordLabel: trk.recordLabel,
+    });
+  };
+
+  // Play entire continuous progressive set
+  const handlePlayEntireSet = async () => {
+    if (!journey || !journey.tracks.length) return;
+
+    if (isPlayingAll) {
+      handleStopPlayback();
+      return;
+    }
+
+    setIsPlayingAll(true);
+    setPlayingTrackIndex(0);
+    const firstTrack = journey.tracks[0];
+    await audioEngine.playHarmonicTrack({
+      title: firstTrack.title,
+      bpm: firstTrack.bpm,
+      musicalKey: firstTrack.musicalKey,
+      subGenre: firstTrack.subGenre,
+      recordLabel: firstTrack.recordLabel,
+    });
+  };
+
+  // Skip to next track in generated set
+  const handleSkipNext = async () => {
+    if (!journey || !journey.tracks.length) return;
+    const nextIdx = playingTrackIndex !== null ? (playingTrackIndex + 1) % journey.tracks.length : 0;
+    setPlayingTrackIndex(nextIdx);
+    const nextTrack = journey.tracks[nextIdx];
+    await audioEngine.playHarmonicTrack({
+      title: nextTrack.title,
+      bpm: nextTrack.bpm,
+      musicalKey: nextTrack.musicalKey,
+      subGenre: nextTrack.subGenre,
+      recordLabel: nextTrack.recordLabel,
+    });
+  };
+
+  const handleStopPlayback = () => {
+    audioEngine.stopAll();
+    setPlayingTrackIndex(null);
+    setIsPlayingAll(false);
   };
 
   const handleExportSpotify = () => {
@@ -271,47 +353,136 @@ export const PersonalizedPlaylists: React.FC<PersonalizedPlaylistsProps> = ({
             </div>
           </div>
 
-          {/* Ordered Track List with Camelot progression */}
-          <div className="space-y-3">
-            {journey.tracks.map((t, idx) => (
-              <div
-                key={idx}
-                className="p-3.5 rounded-xl bg-[#080A0F] border border-[#1A2234] hover:border-[#334155] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 group"
+          {/* Master Continuous Playback Banner for Generated Set */}
+          <div className="p-4 rounded-xl bg-gradient-to-r from-[#00F0FF]/15 via-[#7928CA]/15 to-[#FF007A]/10 border border-[#00F0FF]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={handlePlayEntireSet}
+                className="w-11 h-11 rounded-full bg-gradient-to-tr from-[#00F0FF] to-[#7928CA] text-black flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all shrink-0"
+                title={isPlayingAll ? 'Stop continuous set' : 'Play continuous progressive mix'}
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-7 h-7 rounded-lg bg-[#141C2E] text-xs font-mono font-bold text-[#00F0FF] flex items-center justify-center shrink-0">
-                    {idx + 1}
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-xs font-bold text-white font-display">
-                        {t.title}
-                      </h3>
-                      <span className="text-[11px] text-[#94A3B8]">— {t.artist}</span>
-                    </div>
-                    {t.reasoning && (
-                      <p className="text-[11px] text-[#64748B] mt-0.5">
-                        {t.reasoning}
-                      </p>
-                    )}
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4 text-xs font-mono">
-                  <span className="text-[#94A3B8]">{t.recordLabel}</span>
-                  <span className="px-2 py-0.5 rounded bg-[#00F0FF]/10 text-[#00F0FF] font-bold">
-                    {t.musicalKey}
+                {isPlayingAll ? (
+                  <Square className="w-4 h-4 fill-current" />
+                ) : (
+                  <Play className="w-4 h-4 fill-current ml-0.5" />
+                )}
+              </button>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold text-white font-display">
+                    {isPlayingAll
+                      ? `Now Playing Mix: Track ${playingTrackIndex !== null ? playingTrackIndex + 1 : 1} of ${journey.tracks.length}`
+                      : 'Play Continuous Harmonic Mix'}
                   </span>
-                  <span className="text-[#64748B]">{t.bpm} BPM</span>
-                  <button
-                    onClick={() => onSelectTrackByTitle(t.title)}
-                    className="text-xs text-[#00F0FF] hover:underline font-mono"
-                  >
-                    View ID →
-                  </button>
+                  {isPlayingAll && (
+                    <span className="flex items-center gap-1 text-[10px] font-mono text-[#00F0FF] bg-[#00F0FF]/15 px-2 py-0.5 rounded-full border border-[#00F0FF]/30">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#00F0FF] animate-ping" />
+                      LIVE AUDIO ENGINE
+                    </span>
+                  )}
+                </div>
+                <div className="text-[11px] text-[#94A3B8] font-mono mt-0.5">
+                  {playingTrackIndex !== null && journey.tracks[playingTrackIndex]
+                    ? `${journey.tracks[playingTrackIndex].title} — ${journey.tracks[playingTrackIndex].artist} (${journey.tracks[playingTrackIndex].musicalKey}, ${journey.tracks[playingTrackIndex].bpm} BPM)`
+                    : 'Seamless key transitions across all 5 generated progressive stages'}
                 </div>
               </div>
-            ))}
+            </div>
+
+            <div className="flex items-center gap-2 ml-auto sm:ml-0">
+              {playingTrackIndex !== null && (
+                <>
+                  <button
+                    onClick={handleSkipNext}
+                    className="p-2 rounded-lg bg-[#141C2E] border border-[#1E293B] text-white hover:bg-[#1E293B] transition-colors flex items-center gap-1.5 text-xs font-mono"
+                    title="Skip to next harmonic stage"
+                  >
+                    <SkipForward className="w-3.5 h-3.5 text-[#00F0FF]" />
+                    <span>Next Transition</span>
+                  </button>
+                  <button
+                    onClick={handleStopPlayback}
+                    className="p-2 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-300 hover:bg-rose-500/20 transition-colors text-xs font-mono"
+                  >
+                    Stop
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* Ordered Track List with Camelot progression & individual play buttons */}
+          <div className="space-y-3">
+            {journey.tracks.map((t, idx) => {
+              const isThisPlaying = playingTrackIndex === idx;
+              return (
+                <div
+                  key={idx}
+                  className={`p-3.5 rounded-xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 group ${
+                    isThisPlaying
+                      ? 'bg-[#0E1528] border-[#00F0FF] shadow-lg shadow-[#00F0FF]/10'
+                      : 'bg-[#080A0F] border-[#1A2234] hover:border-[#334155]'
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    {/* Individual Play Button */}
+                    <button
+                      onClick={() => handlePlaySingleTrack(idx)}
+                      className={`w-9 h-9 rounded-lg flex items-center justify-center transition-all shrink-0 ${
+                        isThisPlaying
+                          ? 'bg-[#00F0FF] text-black shadow-md shadow-[#00F0FF]/30 scale-105'
+                          : 'bg-[#141C2E] text-white hover:bg-[#00F0FF] hover:text-black'
+                      }`}
+                      title={isThisPlaying ? 'Stop playback' : `Play ${t.title}`}
+                    >
+                      {isThisPlaying ? (
+                        <Square className="w-3.5 h-3.5 fill-current" />
+                      ) : (
+                        <Play className="w-3.5 h-3.5 fill-current ml-0.5" />
+                      )}
+                    </button>
+
+                    <div className="w-7 h-7 rounded-lg bg-[#141C2E] text-xs font-mono font-bold text-[#00F0FF] flex items-center justify-center shrink-0">
+                      {idx + 1}
+                    </div>
+
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-xs font-bold text-white font-display">
+                          {t.title}
+                        </h3>
+                        <span className="text-[11px] text-[#94A3B8]">— {t.artist}</span>
+                        {isThisPlaying && (
+                          <span className="flex items-center gap-1 text-[10px] font-mono text-[#00F0FF] animate-pulse">
+                            <Volume2 className="w-3 h-3" />
+                            Playing
+                          </span>
+                        )}
+                      </div>
+                      {t.reasoning && (
+                        <p className="text-[11px] text-[#64748B] mt-0.5">
+                          {t.reasoning}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3 text-xs font-mono ml-auto sm:ml-0">
+                    <span className="text-[#94A3B8]">{t.recordLabel}</span>
+                    <span className="px-2 py-0.5 rounded bg-[#00F0FF]/10 text-[#00F0FF] font-bold">
+                      {t.musicalKey}
+                    </span>
+                    <span className="text-[#64748B]">{t.bpm} BPM</span>
+                    <button
+                      onClick={() => onSelectTrackByTitle(t.title)}
+                      className="text-xs text-[#00F0FF] hover:underline font-mono ml-2"
+                    >
+                      View ID →
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}

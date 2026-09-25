@@ -44,13 +44,17 @@ export const LabelArtistFilter: React.FC<LabelArtistFilterProps> = ({
   // Filtered tracks
   const filteredTracks = useMemo(() => {
     return PROGRESSIVE_TRACKS.filter((track) => {
-      // Search
+      // Search matching title, artist, label, catalogId, or Beatport ID
+      const q = searchQuery.toLowerCase().trim();
       const matchesSearch =
-        !searchQuery ||
-        track.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        track.artist.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        track.recordLabel.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (track.version && track.version.toLowerCase().includes(searchQuery.toLowerCase()));
+        !q ||
+        track.title.toLowerCase().includes(q) ||
+        track.artist.toLowerCase().includes(q) ||
+        track.recordLabel.toLowerCase().includes(q) ||
+        (track.version && track.version.toLowerCase().includes(q)) ||
+        (track.catalogId && track.catalogId.toLowerCase().includes(q)) ||
+        (track.beatportTrackId && (track.beatportTrackId.includes(q) || q.includes(track.beatportTrackId))) ||
+        (track.isrc && track.isrc.toLowerCase().includes(q));
 
       // Label filter
       const matchesLabel =

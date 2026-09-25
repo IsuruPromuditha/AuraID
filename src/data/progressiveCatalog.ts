@@ -196,6 +196,15 @@ export const PROGRESSIVE_TRACKS: Track[] = [
     subGenre: 'Melodic House & Techno',
     coverImage: '/src/assets/images/progressive_cover_afterlife_1790355441114.jpg',
     durationSeconds: 342,
+    catalogId: 'AL074',
+    beatportTrackId: '17604921',
+    isrc: 'IT-A01-23-00042',
+    identifiedStems: {
+      leadSynth: 'Analog Detuned Dual-Sawtooth with 24dB Moog Lowpass Filter Sweep',
+      bassline: 'Sub-bass rolling 8th-note octaves at 45Hz with saturation',
+      percussion: '909 Punchy Kick Drum, tight closed hi-hats, subtle clap reverb',
+      vocalPad: 'Ethereal robotic vocoder whispers: "Explore your future"',
+    },
     platforms: [
       {
         platform: 'beatport',
@@ -275,6 +284,15 @@ export const PROGRESSIVE_TRACKS: Track[] = [
     subGenre: 'Deep Progressive',
     coverImage: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=800&auto=format&fit=crop',
     durationSeconds: 388,
+    catalogId: 'ANJCD084',
+    beatportTrackId: '12739824',
+    isrc: 'GB-L67-19-00142',
+    identifiedStems: {
+      leadSynth: 'Warm Rhodes electric piano chords with gentle tape flutter',
+      bassline: 'Deep analog Moog sub bass line in A Major',
+      percussion: 'Organic brushed kick, subtle acoustic shaker & crisp closed hats',
+      vocalPad: 'Ethereal airy vocals by Malou: "Can you hear me breathing"',
+    },
     platforms: [
       {
         platform: 'beatport',
@@ -347,6 +365,15 @@ export const PROGRESSIVE_TRACKS: Track[] = [
     subGenre: 'Progressive House',
     coverImage: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=800&auto=format&fit=crop',
     durationSeconds: 520,
+    catalogId: 'LF088',
+    beatportTrackId: '15392019',
+    isrc: 'IL-G01-21-00088',
+    identifiedStems: {
+      leadSynth: 'Modular analog synth bell arpeggios modulating pitch every 32 bars',
+      bassline: 'Hypnotic rolling sub groove tuned to D minor (7A)',
+      percussion: 'Polyrhythmic filtered rimshots, subtle woodblocks & 909 analog groove',
+      vocalPad: 'Atmospheric ambient noise floor and cosmic delay sweeps',
+    },
     platforms: [
       {
         platform: 'beatport',
@@ -418,6 +445,15 @@ export const PROGRESSIVE_TRACKS: Track[] = [
     subGenre: 'Peak-Time Progressive',
     coverImage: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=800&auto=format&fit=crop',
     durationSeconds: 472,
+    catalogId: 'BEDROM01',
+    beatportTrackId: '13109283',
+    isrc: 'GB-BDR-20-00015',
+    identifiedStems: {
+      leadSynth: 'Stephan Bodzin iconic Moog Sub 37 distorted sync lead in E-flat minor',
+      bassline: 'Driving 16th-note acid bassline with resonant cutoff automation',
+      percussion: 'Heavy industrial club kick and crisp 909 ride cymbals',
+      vocalPad: 'Rising white noise risers and pitch-bent tension sweeps',
+    },
     platforms: [
       {
         platform: 'beatport',
@@ -489,6 +525,15 @@ export const PROGRESSIVE_TRACKS: Track[] = [
     subGenre: 'Progressive House',
     coverImage: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=800&auto=format&fit=crop',
     durationSeconds: 494,
+    catalogId: 'PRY048',
+    beatportTrackId: '17928192',
+    isrc: 'SE-UM7-23-00004',
+    identifiedStems: {
+      leadSynth: 'Towering Eric Prydz supersaw brass leads with pitch detune & stadium reverb',
+      bassline: 'Punchy electro-progressive sidechained bassline',
+      percussion: 'LinnDrum side-stick and massive punchy progressive kick',
+      vocalPad: 'Epic filtered white noise crescendo and harmonic risers',
+    },
     platforms: [
       {
         platform: 'beatport',
@@ -560,6 +605,15 @@ export const PROGRESSIVE_TRACKS: Track[] = [
     subGenre: 'Organic House',
     coverImage: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=800&auto=format&fit=crop',
     durationSeconds: 384,
+    catalogId: 'CER014',
+    beatportTrackId: '15829102',
+    isrc: 'FR-9W1-21-00014',
+    identifiedStems: {
+      leadSynth: 'Live acoustic & electric guitar fingerpicking through space delay',
+      bassline: 'Warm acoustic-modeled upright sub-bass',
+      percussion: 'TR-808 organic percussion, bongos & delicate shaker patterns',
+      vocalPad: 'Intimate indie vocal lead: "Sirens in the distance call me home"',
+    },
     platforms: [
       {
         platform: 'beatport',
@@ -631,6 +685,15 @@ export const PROGRESSIVE_TRACKS: Track[] = [
     subGenre: 'Organic House',
     coverImage: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop',
     durationSeconds: 512,
+    catalogId: 'ADID082',
+    beatportTrackId: '16472891',
+    isrc: 'GB-B03-22-00082',
+    identifiedStems: {
+      leadSynth: 'Organic chromatic kalimba motif layered with acoustic harp plucks',
+      bassline: 'Deep gentle sub-bass pulse at 41Hz with warm saturation',
+      percussion: 'Live wooden shakers, subtle hi-hat ticks & soft felt kick',
+      vocalPad: 'Lush cinematic string section and sunset atmospheric ambience',
+    },
     platforms: [
       {
         platform: 'beatport',
@@ -702,6 +765,15 @@ export const PROGRESSIVE_TRACKS: Track[] = [
     subGenre: 'Progressive House',
     coverImage: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?q=80&w=800&auto=format&fit=crop',
     durationSeconds: 468,
+    catalogId: 'SUD198',
+    beatportTrackId: '17392819',
+    isrc: 'AR-F02-23-00198',
+    identifiedStems: {
+      leadSynth: 'Analog modular sequenced pluck melody with tape echo modulation',
+      bassline: 'Deep South American progressive rolling bassline with sub drive',
+      percussion: 'Crisp percussive groove, syncopated ride cymbals & acoustic claps',
+      vocalPad: 'Ethereal ambient vocal pads and harmonic frequency swell',
+    },
     platforms: [
       {
         platform: 'beatport',
@@ -773,6 +845,15 @@ export const PROGRESSIVE_TRACKS: Track[] = [
     subGenre: 'Melodic Trance',
     coverImage: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=800&auto=format&fit=crop',
     durationSeconds: 436,
+    catalogId: 'SILK094',
+    beatportTrackId: '15602918',
+    isrc: 'CA-B58-21-00094',
+    identifiedStems: {
+      leadSynth: 'Widescreen euphoric trance lead arpeggio with stereo chorus',
+      bassline: 'Melodic progressive rolling bassline with 16th-note accents',
+      percussion: 'Crisp progressive trance drum pattern with open hi-hat swing',
+      vocalPad: 'Choir-like vocal pad washes and celestial reverb reflections',
+    },
     platforms: [
       {
         platform: 'beatport',

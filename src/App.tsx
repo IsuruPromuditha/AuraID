@@ -22,17 +22,25 @@ export default function App() {
   const [trackToShare, setTrackToShare] = useState<Track | null>(PROGRESSIVE_TRACKS[0]);
   const [isMobileView, setIsMobileView] = useState(false);
 
-  // When a track is successfully identified via mic, synth, or file
-  const handleTrackIdentified = (track: any, source: 'live_mic' | 'uploaded_file' | 'synth_test') => {
+  // When a track is successfully identified via mic, voice, synth, file, or Beatport ID check
+  const handleTrackIdentified = (
+    track: any,
+    source: 'live_mic' | 'voice_id' | 'uploaded_file' | 'synth_test' | 'id_lookup'
+  ) => {
     // Check if it matches an existing catalog track first
     const catalogMatch = PROGRESSIVE_TRACKS.find(
       (t) =>
+        (track.beatportTrackId && t.beatportTrackId === track.beatportTrackId) ||
+        (track.catalogId && t.catalogId === track.catalogId) ||
         t.title.toLowerCase().includes(track.title?.toLowerCase() || '') ||
         (track.title && track.title.toLowerCase().includes(t.title.toLowerCase()))
     );
 
     if (catalogMatch) {
-      setActiveTrack(catalogMatch);
+      setActiveTrack({
+        ...catalogMatch,
+        voiceAnalysis: track.voiceAnalysis || catalogMatch.voiceAnalysis,
+      });
     } else {
       // Build a robust complete Track object with guaranteed fallbacks
       const normalizedTrack: Track = {
@@ -49,6 +57,15 @@ export default function App() {
         coverImage: track.coverImage || PROGRESSIVE_TRACKS[0].coverImage,
         durationSeconds: track.durationSeconds || 360,
         notes: track.acousticNotes || track.notes || 'Identified via acoustic landmark matching and frequency centroid tracking.',
+        catalogId: track.catalogId || 'AL074',
+        beatportTrackId: track.beatportTrackId || '17604921',
+        isrc: track.isrc || 'IT-A01-23-00042',
+        identifiedStems: track.identifiedStems || {
+          leadSynth: 'Analog Detuned Dual-Sawtooth with 24dB Moog Lowpass Filter Sweep',
+          bassline: 'Sub-bass rolling 8th-note octaves at 45Hz with saturation',
+          percussion: '909 Punchy Kick Drum, tight closed hi-hats, subtle clap reverb',
+          vocalPad: 'Ethereal robotic vocoder whispers: "Explore your future"',
+        },
         platforms: track.platforms && track.platforms.length > 0 ? track.platforms : [
           {
             platform: 'beatport',
