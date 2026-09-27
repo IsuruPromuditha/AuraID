@@ -1,8 +1,7 @@
 # 🎶 AuraID — Music Identification & Real Owner Verification Engine
 
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?logo=typescript)
-![Playwright](https://img.shields.io/badge/Playwright-1.x-brightgreen?logo=playwright)
-![KaneAI](https://img.shields.io/badge/QA%20Engine-KaneAI-blue)
+![Node.js](https://img.shields.io/badge/Node.js-%3E%3D18.x-green?logo=nodedotjs)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
 **AuraID** is a full-stack, Shazam-style music recognition and copyright registry platform built with **TypeScript**. It allows users to record or upload audio clips, instantly identifies the track via acoustic fingerprint matching, reveals the verified real-world owner/artist, and provides comprehensive ownership metadata along with direct access links.
@@ -22,12 +21,11 @@ Traditional music recognition tools tell you *what* a song is. **AuraID** goes a
 
 - **Audio Recording & Fingerprinting (`/api/v1/identify`)**: Ingests audio snippets and returns confidence scores and unique Track IDs.
 - **Owner & Rights Resolution (`/api/v1/tracks/:id/owner`)**: Fetches detailed artist profiles, publishing rights, and verified external web links.
-- **User Discovery History (`/api/v1/users/:userId/history`)**: Tracks and stores past identifications per user session with clean state management.
-- **Automated QA & Testing Suite**: End-to-end and API testing powered by **TypeScript**, **Playwright Test**, and **KaneAI** for reliable CI/CD execution.
+- **User Discovery History (`/api/v1/users/:userId/history`)**: Tracks and stores past identifications per user session.
 
 ---
 
-## 📑 API Endpoints / Test Coverage Matrix
+## 📑 API Endpoints Matrix
 
 | Module | Endpoint | Method | Description |
 | :--- | :--- | :--- | :--- |
@@ -43,7 +41,6 @@ Traditional music recognition tools tell you *what* a song is. **AuraID** goes a
 
 - **Core Logic & Services**: TypeScript, Node.js, Express / NestJS
 - **Audio Processing**: Acoustic fingerprinting modules & database indexing
-- **Automated Testing**: Playwright Test (`@playwright/test`), KaneAI Agent
 - **Type Checking**: Strict TypeScript definitions (`.ts`)
 
 ---
@@ -55,9 +52,7 @@ AuraID/
 ├── src/
 │   ├── controllers/         # Audio identification & owner lookup controllers
 │   ├── services/            # Fingerprint matching & database integration logic
-│   ├── types/               # TypeScript interfaces (Track, Owner, Payload)
-│   └── tests/               # Playwright TypeScript API test suites
-├── playwright.config.ts     # Playwright configuration
+│   └── types/               # TypeScript interfaces (Track, Owner, Payload)
 ├── tsconfig.json            # TypeScript compiler options
 ├── package.json             # Project dependencies and scripts
 └── README.md                # Project documentation
